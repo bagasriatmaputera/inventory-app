@@ -1,0 +1,8 @@
+
+=============== INstal Laravel dan Breeze =================
+1. Setelah instal laravel, instal breeze dan pakai inertia vue ikuti documentation
+
+=============== Items ===============
+2. Buat model item beserta migration dengan php artisan make:mode items -m
+3. Seting migration sesuai kebutuhan
+4. Pada model tambahkan protected $guard = 'id',  artinya id tidak bisa di update
