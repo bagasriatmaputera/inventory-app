@@ -13,4 +13,8 @@ class ItemController extends Controller
             'items' => $items
         ]);
     }
+
+    public function add(Request $request){
+        return inertia('Items/CreateItemView');
+    }
 }

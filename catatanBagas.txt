@@ -6,3 +6,34 @@
 2. Buat model item beserta migration dengan php artisan make:mode items -m
 3. Seting migration sesuai kebutuhan
 4. Pada model tambahkan protected $guard = 'id',  artinya id tidak bisa di update
+5. Buat ItemController dan buat route item yang menampilkan data items
+6. buat folder item untuk view vue nya di /js/page
+7. buat view index.vue dan ambil data item dari controller yang sudah dibuat
+    sebelum memanggil di vue kita harus mengenalkan proopsnya dulu 
+    <script setup>
+    defineProps(
+        {
+            items: Array
+        }
+    )
+    </script>
+
+    baru panggil dengan v-for
+8. Buat table sederhana untuk data item
+9. Navbar kita samakan dengan halaman dashboard maka kita copas ke Items/Index dan import apa yang dicopas
+    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+    ikuti apa yang ada didashboar dan costum untuk view Items
+10. gunakan container sama dengan dashboad agar telihat lebih rapih
+11. ganti nama app di env. dan import Head inertiajs agar title bisa berubah
+    import { Head } from '@inertiajs/vue3';
+        <Head title="Items" />
+12. tambahkan button dengan mengambil component yang sudah tersedia <PrimaryButton></PrimaryButton> 
+    kemudian beri a href sesuaikan dengan controller
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
+    <PrimaryButton>
+    <a href="">
+    Create Item
+    </a>
+    </PrimaryButton>
+13. Buat Routenya, View dengan navbar sama seperti Index.vue, Controllernya, tambahkan submit.prevent Pada  
+    pada form nya agar tidak reload tapi menjalankan function
