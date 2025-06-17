@@ -9,7 +9,7 @@
 5. Buat ItemController dan buat route item yang menampilkan data items
 6. buat folder item untuk view vue nya di /js/page
 7. buat view index.vue dan ambil data item dari controller yang sudah dibuat
-    sebelum memanggil di vue kita harus mengenalkan proopsnya dulu 
+    sebelum memanggil di vue kita harus mengenalkan proopsnya dulu
     <script setup>
     defineProps(
         {
@@ -27,7 +27,7 @@
 11. ganti nama app di env. dan import Head inertiajs agar title bisa berubah
     import { Head } from '@inertiajs/vue3';
         <Head title="Items" />
-12. tambahkan button dengan mengambil component yang sudah tersedia <PrimaryButton></PrimaryButton> 
+12. tambahkan button dengan mengambil component yang sudah tersedia <PrimaryButton></PrimaryButton>
     kemudian beri a href sesuaikan dengan controller
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     <PrimaryButton>
@@ -35,5 +35,25 @@
     Create Item
     </a>
     </PrimaryButton>
-13. Buat Routenya, View dengan navbar sama seperti Index.vue, Controllernya, tambahkan submit.prevent Pada  
+13. Buat Routenya, View dengan navbar sama seperti Index.vue, Controllernya, tambahkan submit.prevent Pada
     pada form nya agar tidak reload tapi menjalankan function
+14. Guanakan helper useForm yang ada pada inertiajs untuk function form dengan cara import dulu kemudian buat var form
+    import { useForm } from '@inertiajs/vue3;'
+
+    const form = useForm({
+        name:'',
+        qty: 0
+        });
+
+    buat juga variable untuk post
+    const submitForm = () => {
+        form.post('/items');
+    };
+
+    lalu buat route dan Controllernya
+15. Jika ingin menerima pesan succes/error harus setting terlebih dahulu pada middleware handelInertia
+     yang ada di App/Http/Midleware lalu tambahkan nama pesan (bisa diliah di documentation inertiajs)
+     kemudia buat div untuk messagenya
+     <div v-if="$page.props.flash.success" class="bg-green border border-green-400 text-black-700 py-2 px-4 rounded relative" role="alert">
+                            {{ $page.props.flash.success }}
+    </div>

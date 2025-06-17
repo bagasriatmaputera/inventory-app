@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class item extends Model
 {
     use HasFactory;
-    protected $fillable = [];
+
+    protected $guarded = 'id';
+    protected $fillable = ['name','qty','unit'];
 }

@@ -14,7 +14,18 @@ class ItemController extends Controller
         ]);
     }
 
-    public function add(Request $request){
+    public function add(){
         return inertia('Items/CreateItemView');
+    }
+
+    public function store(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'qty' => 'required|numeric|digits_between:1,6',
+            'unit' => 'required|string|max:100',
+        ]);
+        // dd($request->all());
+        Item::create($request->all());
+        return redirect()->route('item.index')->with('success','Item created successfully');
     }
 }

@@ -25,12 +25,19 @@ defineProps(
                                 CREATE ITEM
                             </a>
                         </PrimaryButton>
+                        <!-- alert success -->
+                        <div v-if="$page.props.flash.success"
+                            class="bg-green-100 m-2 border border-green-400 text-black-700 py-2 px-4 rounded relative"
+                            role="alert">
+                            {{ $page.props.flash.success }}
+                        </div>
                         <table class="table-auto w-full mt-4">
                             <thead>
                                 <tr>
                                     <th class="py-4 px-2">#</th>
                                     <th class="py-4 px-2">Name</th>
                                     <th class="py-4 px-2">Qty</th>
+                                    <th class="py-4 px-2">Piece</th>
                                     <th class="py-4 px-2">Action</th>
                                 </tr>
                             </thead>
@@ -39,6 +46,7 @@ defineProps(
                                     <td class="border px-4 py-2">{{ index + 1 }}</td>
                                     <td class="border px-4 py-2">{{ item.name }}</td>
                                     <td class="border px-4 py-2">{{ item.qty }}</td>
+                                    <td class="border px-4 py-2">{{ item.unit }}</td>
                                     <td class="border px-4 py-2">Edit || Stock Card</td>
                                 </tr>
                             </tbody>
