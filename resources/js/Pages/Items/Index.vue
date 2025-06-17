@@ -45,9 +45,22 @@ defineProps(
                                 <tr v-for="(item, index) in items" :key="index">
                                     <td class="border px-4 py-2">{{ index + 1 }}</td>
                                     <td class="border px-4 py-2">{{ item.name }}</td>
-                                    <td class="border px-4 py-2">{{ item.qty }}</td>
-                                    <td class="border px-4 py-2">{{ item.unit }}</td>
-                                    <td class="border px-4 py-2">Edit || Stock Card</td>
+                                    <td class="border px-4 py-2 text-center">{{ item.qty }}</td>
+                                    <td class="border px-4 py-2 text-center">{{ item.unit }}</td>
+                                    <td class="border px-4 py-2 flex justify-center">
+                                        <a :href="`/items/${item.id}/edit-unit`"
+                                            class="bg-blue-100 border border-blue-400 hover:bg-blue-700 text-black-200 hover:text-white font-semibold py-2 px-4 rounded shadow">
+                                            Edit
+                                        </a> |
+                                        <a :href="`/items/${item.id}/edit-stock`"
+                                            class="bg-blue-100 border border-blue-400 hover:bg-blue-700 text-black-200 hover:text-white font-semibold py-2 px-4 rounded shadow">
+                                            Edit Stock
+                                        </a> |
+                                        <a :href="`/items/${item.id}/stockcard`"
+                                            class="bg-blue-100 border border-blue-400 hover:bg-blue-700 text-black-200 hover:text-white font-semibold py-2 px-4 rounded shadow">
+                                            Stockcard
+                                        </a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

@@ -57,3 +57,65 @@
      <div v-if="$page.props.flash.success" class="bg-green border border-green-400 text-black-700 py-2 px-4 rounded relative" role="alert">
                             {{ $page.props.flash.success }}
     </div>
+
+16. Tambkan colum unit untuk keterangan data picis dengan migration
+17. Tambahkan form select untuk input unit, select hasilnya/value nya ada di script kmudian di loop dan value nya diambil
+    const pieces = [
+    { value: 'KG', name: 'Kilograms' },
+    { value: 'GRAM', name: 'Grams' },
+    { value: 'LITER', name: 'Liters' },
+    { value: 'ML', name: 'Milliliters' },
+    { value: 'PCS', name: 'Pieces' },
+    { value: 'PACK', name: 'Packs' },
+    { value: 'BOX', name: 'Boxes' },
+    { value: 'BOTTLE', name: 'Bottles' },
+    { value: 'CAN', name: 'Cans' },
+    { value: 'SACK', name: 'Sacks' },
+    { value: 'BAG', name: 'Bags' },
+    { value: 'SET', name: 'Sets' },
+    { value: 'ROLL', name: 'Rolls' },
+    { value: 'TUBE', name: 'Tubes' },
+    { value: 'TRAY', name: 'Trays' },
+    { value: 'BARREL', name: 'Barrels' },
+    { value: 'CUP', name: 'Cups' },
+    { value: 'PORTION', name: 'Portions' },
+];
+18. Tambahkan unit di model items
+19. Buat controller untuk unit
+
+========= Edit ===========
+20. Buat route untuk edit , perlu diperhatikan untuk bind id jadi nya:
+    <a :href="`/items/${item.id}/edit-unit`"
+
+    kemudian buat view edit dan buat controllernya returun inertia serta beri props,
+    kemudian defineProps({}) perhatikan type, untuk mngetahui type data pakai getType kemudian
+    defineProps typenya sesuaikan
+    const props = defineProps({
+    item: Object,
+});
+
+    tambahkan import sesuai dan ambil value nama dan unit
+    const props = defineProps({
+    item: Object,
+});
+
+const form = useForm({
+    name: props.item.name,
+    unit: props.item.unit
+});
+
+21. buat route untuk store edit unit
+        Route::patch('/items/{id}/edit-unit', [ItemController::class, 'storeEditUnit']);
+22. Buat controllernya cantumkan (Request $request, $id)
+       $items = Item::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'unit' => 'required|string|max:100',
+        ]);
+        // dd($request->all());
+        $items->update($request->all());
+        return redirect()->route('item.index')->with('success', 'Item update successfully');
+
+23. Buat Route Untuk edit stock dan buat controllernya return inertia serta beri props yang isinya item = id
+24. Buat vue view nya dan import yang diperlukan lalu input name beri readonly
+25
