@@ -118,4 +118,57 @@ const form = useForm({
 
 23. Buat Route Untuk edit stock dan buat controllernya return inertia serta beri props yang isinya item = id
 24. Buat vue view nya dan import yang diperlukan lalu input name beri readonly
-25
+
+========= Make model and migration for stockcard ============
+25. php artisan make:mode StockCard -m, atur fillable nya
+26. atur migration nya perhatikan fk untuk item id, kemudia migrate
+
+     Schema::create('stock_cards', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('item_id')->constrained();
+            $table->double('qty');
+            $table->enum('note', ['in', 'out']);
+            $table->text('description');
+            $table->timestamps();
+        });
+
+27. Buat controllernya beserta logika jika IN (maka +), jika OUT(maka -), dan update kedata item juga stockcard
+    public function storeEditStock(Request $request, $id)
+    {
+        $items = Item::findOrFail($id);
+        $request->validate([
+            'qty' => 'required|numeric|digits_between:1,6',
+            'status' => 'required|in:in,out',
+            'description' => 'required|min:5|string'
+        ]);
+
+        $dataStockCard = [
+            'item_id' => $items->id,
+            'qty' => $request->qty,
+            'status' => $request->status,
+            'description' => $request->description
+        ];
+
+        if ($request->status == 'in') {
+            $newQty = $items->qty + $request->qty;
+        } else if($request->status == 'out'){
+            if($request->qty > $items->qty){
+                return redirect()->route('item.index')->with('error','stock not availible')
+            }
+            $newQty = $items->qty - $request->qty;
+        }
+
+        $items->update(['qty' => $newQty]);
+        StockCard::create($dataStockCard);
+        return redirect()->route('item.index')->with('success', 'Stock Item update successfully');
+    }
+
+28. buat View nya dan buat controllernya (perhatikan)
+     public function stockcard($id)
+    {
+        $stockcards = StockCard::where('item_id', $id)->orderBy('created_at', 'desc')->get();
+        return inertia('Items/StockCardView', [
+            'items' => $stockcards
+        ]);
+    }
+

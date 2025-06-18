@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\item;
+use App\Models\StockCard;
 
 class ItemController extends Controller
 {
@@ -51,17 +52,47 @@ class ItemController extends Controller
     public function editStock($id)
     {
         $items = Item::findOrFail($id);
-        return inertia('Items/EditStockView', ['item' => $items]);
+        // dd($items);
+        return inertia('Items/EditStockView', [
+            'item' => $items
+        ]);
     }
     public function storeEditStock(Request $request, $id)
     {
         $items = Item::findOrFail($id);
         $request->validate([
             'qty' => 'required|numeric|digits_between:1,6',
+            'status' => 'required|in:in,out',
+            'description' => 'required|min:5|string'
         ]);
-        // dd($request->all());
-        $items->update($request->all());
+
+        $dataStockCard = [
+            'item_id' => $items->id,
+            'qty' => $request->qty,
+            'status' => $request->status,
+            'description' => $request->description
+        ];
+
+        if ($request->status == 'in') {
+            $newQty = $items->qty + $request->qty;
+        } else if($request->status === 'out'){
+            if ($request->qty > $items->qty) {
+                return redirect()->route('item.index')->with('error','stock are not availible!! ');
+            }
+            $newQty = $items->qty - $request->qty;
+        }
+
+        $items->update(['qty' => $newQty]);
+        StockCard::create($dataStockCard);
         return redirect()->route('item.index')->with('success', 'Stock Item update successfully');
     }
-    public function stockcard($id) {}
+    public function stockcard($id)
+    {
+        $item = Item::findOrFail($id);
+        $stockcards = StockCard::where('item_id', $id)->orderBy('created_at', 'desc')->get();
+        return inertia('Items/StockCardView', [
+            'items' => $stockcards,
+            'item' => $item,
+        ]);
+    }
 }
